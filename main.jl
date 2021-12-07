@@ -81,17 +81,19 @@ rmin = @lift(($(r_range.interval))[1])
 rmax = @lift(($(r_range.interval))[2])
 λ = Slider(fig[3, 2], range = range(0, 10, length = 10001), startvalue = 3).value
 fparam = Slider(fig[4, 2], range = range(0, 1.8, length = 101), startvalue = 1).value
+fparam2 = Slider(fig[5, 2], range = range(0, 1, length = 101), startvalue = 0.5).value
 
 label_rmin_max = lift(r_range.interval) do r
     string(round.(r, digits = 2))
 end
 Label(fig[2, 1], label_rmin_max)
 Label(fig[3, 1], @lift("λ = " * string(round.($λ, digits = 2))))
-Label(fig[4, 1], @lift("den = " * string(round.($fparam, digits = 2))))
+Label(fig[4, 1], @lift("f_exp = " * string(round.($fparam, digits = 2))))
+Label(fig[5, 1], @lift("f_den = " * string(round.($fparam2, digits = 2))))
 
 x = range(-1, 1, length = 200)
 y = range(-1, 1, length = 200)
-z = @lift(@. abs.(3 - 1 / sqrt((x')^2 + y^2)^$fparam))  # broadcasts to 2d array
+z = @lift(@. abs.(3 - 1 / sqrt((x')^2 + y^2 + $fparam2)^$fparam))  # broadcasts to 2d array
 zlims!(ax1, (0, 5)) # as tuple, reversed
 
 dx = x[2] - x[1]
